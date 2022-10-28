@@ -1,0 +1,12 @@
+build/**
+config/**
+dist/**
+bin/**
+lib/**
+node_modules/**
+*.config.js
+test/**
+src/@types/**
+.eslintrc.js
+jest.config.ts;
+tsconfig.json

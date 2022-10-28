@@ -1,0 +1,35 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"allowUnreachableCode": true,
+		"importHelpers": true,
+		"jsx": "react-jsx",
+		"noImplicitAny": false,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"outDir": "./dist",
+		"baseUrl": "./",
+		"strict": true,
+		"typeRoots": ["node_modules/@types"],
+		"paths": {
+			"@/*": ["src/*"],
+			"*": ["types/*"]
+		},
+		"allowSyntheticDefaultImports": true,
+		"experimentalDecorators": true,
+		"allowJs": true,
+		"plugins": [{ "name": "typescript-plugin-css-modules" }]
+	},
+	"include": ["src/**/*", "typings.d.ts", "test/**/*"],
+	"exclude": [
+		"**css.d.ts",
+		"**.html",
+		"webpack.config.js",
+		"config/**/*",
+		"bin/**/*",
+		"node_modules",
+    "jest.config.ts"
+	]
+}
