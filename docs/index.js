@@ -25,7 +25,7 @@ ___CSS_LOADER_EXPORT___.locals = {};
 
 /***/ }),
 
-/***/ 632:
+/***/ 281:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 
@@ -206,33 +206,9 @@ const useEventListener = (eventName, listener, target, options = {}, deps = []) 
 // EXTERNAL MODULE: ./node_modules/lodash/throttle.js
 var throttle = __webpack_require__(493);
 var throttle_default = /*#__PURE__*/__webpack_require__.n(throttle);
-;// CONCATENATED MODULE: ./src/ruler/Ruler.tsx
+;// CONCATENATED MODULE: ./src/ruler/utils/draw.ts
 
-var __defProp = Object.defineProperty;
-var __defProps = Object.defineProperties;
-var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
-var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __propIsEnum = Object.prototype.propertyIsEnumerable;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __spreadValues = (a, b) => {
-  for (var prop in b || (b = {}))
-    if (__hasOwnProp.call(b, prop))
-      __defNormalProp(a, prop, b[prop]);
-  if (__getOwnPropSymbols)
-    for (var prop of __getOwnPropSymbols(b)) {
-      if (__propIsEnum.call(b, prop))
-        __defNormalProp(a, prop, b[prop]);
-    }
-  return a;
-};
-var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-
-
-
-
-
-const Ruler_defaultConfig = {
+const draw_defaultConfig = {
   width: 600 + 10,
   height: 30,
   size: 7e3,
@@ -241,7 +217,7 @@ const Ruler_defaultConfig = {
   w: 5,
   h: 10
 };
-const Ruler_draw = (ctx, config = Ruler_defaultConfig) => {
+const draw_draw = (ctx, config = draw_defaultConfig) => {
   const size = (config.size || 100) * 10 + 1;
   const x = config.x || 0;
   const y = config.y || 0;
@@ -251,13 +227,13 @@ const Ruler_draw = (ctx, config = Ruler_defaultConfig) => {
   ctx.clearRect(0, 0, config.width, config.height);
   ctx.strokeStyle = "#666";
   ctx.lineWidth = 1;
-  ctx.font = 12;
+  ctx.font = "12px";
   for (let i = 0; i < size; i++) {
     ctx.beginPath();
     ctx.moveTo(x + i * w, y);
     if (i % 10 == 0) {
       offset = String(i / 10).length * 6 / 2;
-      ctx.fillText(i / 10 * 50, x + i * w - offset + 9, y - h * 1.2);
+      ctx.fillText(i * 5 + "", x + i * w - offset + 9, y - h * 1.2);
       ctx.lineTo(x + i * w, y - h * 2);
     } else {
       ctx.lineTo(x + i * w, y - (i % 5 === 0 ? 1.5 : 1) * h);
@@ -265,7 +241,7 @@ const Ruler_draw = (ctx, config = Ruler_defaultConfig) => {
     ctx.stroke();
   }
 };
-const Ruler_defaultConfig2 = {
+const draw_defaultConfig2 = {
   width: 30,
   height: 600 + 10,
   size: 7e3,
@@ -274,7 +250,7 @@ const Ruler_defaultConfig2 = {
   w: 5,
   h: 10
 };
-const Ruler_draw2 = (ctx, config = Ruler_defaultConfig2) => {
+const draw_draw2 = (ctx, config = draw_defaultConfig2) => {
   const size = (config.size || 100) * 10 + 1;
   const x = config.x || 0;
   const y = config.y || 0;
@@ -308,8 +284,50 @@ const Ruler_draw2 = (ctx, config = Ruler_defaultConfig2) => {
     ctx.stroke();
   }
 };
+const createHDCanvas = (canvas, w, h) => {
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = w * ratio;
+  canvas.height = h * ratio;
+  canvas.style.width = `${w}px`;
+  canvas.style.height = `${h}px`;
+  const ctx = canvas.getContext("2d");
+  ctx.scale(ratio, ratio);
+  return ctx;
+};
+
+;// CONCATENATED MODULE: ./src/ruler/utils/index.ts
+
+
+
+;// CONCATENATED MODULE: ./src/ruler/Ruler.tsx
+
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+
+
+
+
+
+
 const Ruler_Ruler = (props) => {
-  const { children } = props;
+  const { children, style, ruleStyle, disabled } = props;
   external_React_default().Children.only(children);
   const ref = (0,external_React_.useRef)(null);
   const childRef = (0,external_React_.useRef)(null);
@@ -333,14 +351,12 @@ const Ruler_Ruler = (props) => {
     }
   }, [mount]);
   const drawVertical = throttle_default()((start) => {
-    const canvas2 = canvasVerticalRef.current;
-    const ctx2 = canvas2.getContext("2d");
-    Ruler_draw2(ctx2, { width: 30, height: height + 10, size: 7e3, x: 30, y: 10 - start, w: 5, h: 10 });
+    const ctx2 = createHDCanvas(canvasVerticalRef.current, 30, height + 10);
+    draw_draw2(ctx2, { width: 30, height: height + 10, size: 7e3, x: 30, y: 10 - start, w: 5, h: 10 });
   }, 100);
   const drawHorizontal = throttle_default()((start) => {
-    const canvas = canvasHorizontalRef.current;
-    const ctx = canvas.getContext("2d");
-    Ruler_draw(ctx, { height: 30, width: width + 10, size: 7e3, x: 10 - start, y: 30, w: 5, h: 10 });
+    const ctx = createHDCanvas(canvasHorizontalRef.current, width + 10, 30);
+    draw_draw(ctx, { height: 30, width: width + 10, size: 7e3, x: 10 - start, y: 30, w: 5, h: 10 });
   }, 100);
   const onScroll = (e) => {
     const scrollTop = e.target.scrollTop;
@@ -353,10 +369,10 @@ const Ruler_Ruler = (props) => {
   useEventListener("scroll", onScroll, childRef.current);
   const ChildNodes = external_React_default().Children.map([props.children], (child, index) => {
     const { props: props2 } = child;
-    const { style } = props2;
+    const { style: style2 } = props2;
     const cloneChild = external_React_default().cloneElement(child, __spreadProps(__spreadValues({}, child), {
       ref: childRef,
-      style: __spreadProps(__spreadValues({}, style), {
+      style: __spreadProps(__spreadValues({}, style2), {
         position: "absolute",
         width: "100%",
         height: "100%",
@@ -367,9 +383,15 @@ const Ruler_Ruler = (props) => {
     }));
     return cloneChild;
   });
+  const { background } = style || {};
+  if (disabled) {
+    return /* @__PURE__ */ (0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+      children
+    });
+  }
   return /* @__PURE__ */ (0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /* @__PURE__ */ (0,jsx_runtime.jsxs)("div", {
-      style: { position: "absolute", width: "100%", height: "100%" },
+      style: __spreadProps(__spreadValues({ background: "#fff" }, style), { position: "absolute", width: "100%", height: "100%" }),
       ref,
       children: [
         /* @__PURE__ */ (0,jsx_runtime.jsx)("div", {
@@ -386,13 +408,21 @@ const Ruler_Ruler = (props) => {
         /* @__PURE__ */ (0,jsx_runtime.jsx)("canvas", {
           width: width + 10,
           height: "30",
-          style: { position: "absolute", left: 20 },
+          style: __spreadValues({
+            position: "absolute",
+            left: 20,
+            background: background ? background : "#fff"
+          }, ruleStyle),
           ref: canvasHorizontalRef
         }),
         /* @__PURE__ */ (0,jsx_runtime.jsx)("canvas", {
           width: "30",
           height: height + 10,
-          style: { position: "absolute", top: 20 },
+          style: __spreadValues({
+            position: "absolute",
+            top: 20,
+            background: background ? background : "#fff"
+          }, ruleStyle),
           ref: canvasVerticalRef
         }),
         ChildNodes
@@ -447,7 +477,7 @@ const MainRoutes = () => {
     children: [
       /* @__PURE__ */ (0,jsx_runtime.jsx)(react_router_dist/* Route */.AW, {
         index: true,
-        element: /* @__PURE__ */ (0,jsx_runtime.jsx)(Demo1, {})
+        element: /* @__PURE__ */ (0,jsx_runtime.jsx)(Demo3, {})
       }),
       /* @__PURE__ */ (0,jsx_runtime.jsx)(react_router_dist/* Route */.AW, {
         path: "/demo1",
@@ -715,7 +745,7 @@ module.exports = ReactDOM;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [169], () => (__webpack_require__(632)))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [169], () => (__webpack_require__(281)))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
