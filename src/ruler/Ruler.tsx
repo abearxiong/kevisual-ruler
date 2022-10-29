@@ -13,7 +13,7 @@ const defaultConfig = {
 	w: 5, // 刻度线的间隔
 	h: 10, // 刻度线基础长度[高度]
 };
-const draw = (ctx, config: any = defaultConfig) => {
+const draw = (ctx: CanvasRenderingContext2D, config: any = defaultConfig) => {
 	const size = (config.size || 100) * 10 + 1;
 	const x = config.x || 0;
 	const y = config.y || 0;
@@ -25,7 +25,7 @@ const draw = (ctx, config: any = defaultConfig) => {
 	// 设置画笔属性
 	ctx.strokeStyle = '#666';
 	ctx.lineWidth = 1;
-	ctx.font = 12;
+	ctx.font = '12px';
 	for (let i = 0; i < size; i++) {
 		// 开始一条路径
 		ctx.beginPath();
@@ -38,7 +38,7 @@ const draw = (ctx, config: any = defaultConfig) => {
 			// offset = (String(i / 10).length * 6) / 2;
 			// ctx.fillText((i / 10) * 50, x + i * w - offset, y - h * 2.5);
 			offset = (String(i / 10).length * 6) / 2;
-			ctx.fillText((i / 10) * 50, x + i * w - offset + 9, y - h * 1.2);
+			ctx.fillText(i * 5 + '', x + i * w - offset + 9, y - h * 1.2);
 			// 画刻度尺
 			ctx.lineTo(x + i * w, y - h * 2);
 		} else {
@@ -104,10 +104,12 @@ const draw2 = (ctx: CanvasRenderingContext2D, config: any = defaultConfig2) => {
 	}
 };
 type Props = {
+	style?: React.CSSProperties;
+	ruleStyle?: React.CSSProperties;
 	children?: any;
 };
 export const Ruler = (props: Props) => {
-	const { children } = props;
+	const { children, style, ruleStyle } = props;
 	React.Children.only(children);
 
 	const ref = useRef<HTMLDivElement | null>(null);
@@ -138,7 +140,7 @@ export const Ruler = (props: Props) => {
 	}, 100);
 	const drawHorizontal = throttle((start: number) => {
 		const canvas = canvasHorizontalRef.current!;
-		const ctx = canvas.getContext('2d');
+		const ctx = canvas.getContext('2d')!;
 		draw(ctx, { height: 30, width: width + 10, size: 7000, x: 10 - start, y: 30, w: 5, h: 10 });
 	}, 100);
 	const onScroll = (e: any) => {
@@ -169,9 +171,10 @@ export const Ruler = (props: Props) => {
 		});
 		return cloneChild;
 	});
+	const { background } = style || {};
 	return (
 		<>
-			<div style={{ position: 'absolute', width: '100%', height: '100%' }} ref={ref}>
+			<div style={{ background: '#fff', ...style, position: 'absolute', width: '100%', height: '100%' }} ref={ref}>
 				<div
 					style={{
 						width: 30,
@@ -186,15 +189,23 @@ export const Ruler = (props: Props) => {
 				<canvas
 					width={width + 10}
 					height='30'
-					//
-					style={{ position: 'absolute', left: 20 }}
+					style={{
+						position: 'absolute',
+						left: 20,
+						background: background ? background : '#fff',
+						...ruleStyle,
+					}}
 					ref={canvasHorizontalRef}
 				></canvas>
 				<canvas
 					width='30'
 					height={height + 10}
-					//
-					style={{ position: 'absolute', top: 20 }}
+					style={{
+						position: 'absolute',
+						top: 20,
+						background: background ? background : '#fff',
+						...ruleStyle,
+					}}
 					ref={canvasVerticalRef}
 				></canvas>
 				{ChildNodes}
