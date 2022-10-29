@@ -20,7 +20,6 @@
 		"eslint": "eslint --fix --ext .ts,.tsx src"
 	},
 	"dependencies": {
-		"@abearxiong/kevisual-ruler": "^0.0.1",
 		"lodash": "^4.17.21"
 	},
 	"devDependencies": {
