@@ -29,3 +29,8 @@ export const Demo = () => {
 	);
 };
 ```
+
+## 图片
+
+[预览](!https://github.com/abearxiong/kevisual-ruler/blob/main/public/kevisual-ruler.png?raw=true)
+
