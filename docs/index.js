@@ -518,7 +518,7 @@ var update = injectStylesIntoStyleTag_default()(app_module/* default */.Z, optio
 
 
 const kevisual = document.getElementById("kevisual");
-const basename =  false ? 0 : "/kevisual";
+const basename =  false ? 0 : "/kevisual-ruler";
 const App = () => {
   return /* @__PURE__ */ (0,jsx_runtime.jsx)(dist/* BrowserRouter */.VK, {
     basename,
@@ -705,7 +705,7 @@ module.exports = ReactDOM;
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunkkevisual_ruler"] = self["webpackChunkkevisual_ruler"] || [];
+/******/ 		var chunkLoadingGlobal = self["webpackChunk_abearxiong_kevisual_ruler"] = self["webpackChunk_abearxiong_kevisual_ruler"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();

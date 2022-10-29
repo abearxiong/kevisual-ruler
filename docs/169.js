@@ -1,4 +1,4 @@
-(self["webpackChunkkevisual_ruler"] = self["webpackChunkkevisual_ruler"] || []).push([[169],{
+(self["webpackChunk_abearxiong_kevisual_ruler"] = self["webpackChunk_abearxiong_kevisual_ruler"] || []).push([[169],{
 
 /***/ 599:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {

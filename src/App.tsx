@@ -4,7 +4,7 @@ import { MainRoutes } from './routes/MainRoute';
 import './app.module.scss';
 const kevisual: any = document.getElementById('kevisual');
 
-const basename = WEBPACK_SERVE ? '' : '/kevisual';
+const basename = WEBPACK_SERVE ? '' : '/kevisual-ruler';
 export const App = () => {
 	return (
 		<Router basename={basename}>
