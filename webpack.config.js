@@ -241,7 +241,6 @@ const config = {
     // }),
     ...plugins,
     new BundleAnalyzerPlugin({ analyzerMode: !dev ? 'static' : 'disable' }),
-    new CleanWebpackPlugin(),
   ],
 };
 

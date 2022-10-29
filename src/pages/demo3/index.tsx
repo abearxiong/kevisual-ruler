@@ -9,10 +9,12 @@ export const Demo3 = () => {
 			<div
 				style={{
 					position: 'absolute',
-					left: 400,
-					top: 200,
-					width: 600,
-					height: 600,
+					left: 200,
+					top: 100,
+					width: '40%',
+					height: '40%',
+					background: 'red',
+					overflow: 'hidden',
 				}}
 			>
 				<Ruler>

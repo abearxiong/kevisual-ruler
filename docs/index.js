@@ -25,7 +25,7 @@ ___CSS_LOADER_EXPORT___.locals = {};
 
 /***/ }),
 
-/***/ 281:
+/***/ 853:
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 
@@ -176,7 +176,7 @@ const Demo1 = () => {
   });
 };
 
-;// CONCATENATED MODULE: ./src/ruler/use-event-listener.ts
+;// CONCATENATED MODULE: ./src/ruler/utils/use-event-listener.ts
 
 
 const useEventListener = (eventName, listener, target, options = {}, deps = []) => {
@@ -295,7 +295,81 @@ const createHDCanvas = (canvas, w, h) => {
   return ctx;
 };
 
+;// CONCATENATED MODULE: ./src/ruler/utils/use-mutation.ts
+
+
+const useMutationObserver = (target, listenr) => {
+  const MutationObserver = window.MutationObserver;
+  const ref = useRef(null);
+  const [lastValue, setLastValue] = useState(null);
+  useEffect(() => {
+    if (!target)
+      return;
+    const observer = new MutationObserver((mutationList) => {
+      for (const mutation of mutationList) {
+        console.log(mutation);
+      }
+      const width = +getComputedStyle(target).getPropertyValue("width");
+      const height = +getComputedStyle(target).getPropertyValue("height");
+      if (!lastValue) {
+        setLastValue({ height, width });
+        return;
+      }
+      if (width !== lastValue.width || height !== lastValue.height) {
+        listenr == null ? void 0 : listenr();
+        setLastValue({ width, height });
+      }
+    });
+    observer.observe(target, {
+      attributes: true
+    });
+    ref.current = observer;
+    return () => {
+      var _a;
+      if (ref.current) {
+        (_a = ref.current) == null ? void 0 : _a.disconnect();
+      }
+    };
+  }, [target]);
+};
+
+;// CONCATENATED MODULE: ./src/ruler/utils/use-resize.ts
+
+
+const useResizeObserver = (target, listenr) => {
+  const ResizeObserver = window.ResizeObserver;
+  const ref = useRef(null);
+  const [lastValue, setLastValue] = useState(null);
+  useEffect(() => {
+    if (!target)
+      return;
+    const observer = new ResizeObserver((ResizeList) => {
+      const width = target.clientWidth;
+      const height = target.clientHeight;
+      if (!lastValue) {
+        setLastValue({ height, width });
+        return;
+      }
+      if (width !== lastValue.width || height !== lastValue.height) {
+        listenr == null ? void 0 : listenr();
+        setLastValue({ width, height });
+      }
+    });
+    observer.observe(target);
+    ref.current = observer;
+    return () => {
+      var _a;
+      if (ref.current) {
+        (_a = ref.current) == null ? void 0 : _a.disconnect();
+      }
+    };
+  }, [target]);
+};
+
 ;// CONCATENATED MODULE: ./src/ruler/utils/index.ts
+
+
+
 
 
 
@@ -337,27 +411,34 @@ const Ruler_Ruler = (props) => {
   const [height, setHeight] = (0,external_React_.useState)(10);
   const [mount, setMout] = (0,external_React_.useState)(false);
   (0,external_React_.useEffect)(() => {
-    var _a, _b;
-    const width2 = ((_a = ref.current) == null ? void 0 : _a.clientWidth) || 10;
-    const height2 = ((_b = ref.current) == null ? void 0 : _b.clientHeight) || 10;
-    setWidth(width2);
-    setHeight(height2);
+    resize();
+    if (disabled) {
+      setMout(false);
+    }
     setMout(true);
-  }, []);
+  }, [disabled]);
   (0,external_React_.useEffect)(() => {
     if (mount) {
       drawHorizontal(0);
       drawVertical(0);
     }
   }, [mount]);
+  const resize = () => {
+    var _a, _b;
+    const width2 = ((_a = ref.current) == null ? void 0 : _a.clientWidth) || 10;
+    const height2 = ((_b = ref.current) == null ? void 0 : _b.clientHeight) || 10;
+    setWidth(width2);
+    setHeight(height2);
+    return { width: width2, height: height2 };
+  };
   const drawVertical = throttle_default()((start) => {
     const ctx2 = createHDCanvas(canvasVerticalRef.current, 30, height + 10);
     draw_draw2(ctx2, { width: 30, height: height + 10, size: 7e3, x: 30, y: 10 - start, w: 5, h: 10 });
-  }, 100);
+  }, 50);
   const drawHorizontal = throttle_default()((start) => {
     const ctx = createHDCanvas(canvasHorizontalRef.current, width + 10, 30);
     draw_draw(ctx, { height: 30, width: width + 10, size: 7e3, x: 10 - start, y: 30, w: 5, h: 10 });
-  }, 100);
+  }, 50);
   const onScroll = (e) => {
     const scrollTop = e.target.scrollTop;
     const scrollLeft = e.target.scrollLeft;
@@ -391,7 +472,7 @@ const Ruler_Ruler = (props) => {
   }
   return /* @__PURE__ */ (0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
     children: /* @__PURE__ */ (0,jsx_runtime.jsxs)("div", {
-      style: __spreadProps(__spreadValues({ background: "#fff" }, style), { position: "absolute", width: "100%", height: "100%" }),
+      style: __spreadProps(__spreadValues({ background: "#fff", overflow: "hidden" }, style), { position: "absolute", width: "100%", height: "100%" }),
       ref,
       children: [
         /* @__PURE__ */ (0,jsx_runtime.jsx)("div", {
@@ -406,8 +487,6 @@ const Ruler_Ruler = (props) => {
           }
         }),
         /* @__PURE__ */ (0,jsx_runtime.jsx)("canvas", {
-          width: width + 10,
-          height: "30",
           style: __spreadValues({
             position: "absolute",
             left: 20,
@@ -416,8 +495,6 @@ const Ruler_Ruler = (props) => {
           ref: canvasHorizontalRef
         }),
         /* @__PURE__ */ (0,jsx_runtime.jsx)("canvas", {
-          width: "30",
-          height: height + 10,
           style: __spreadValues({
             position: "absolute",
             top: 20,
@@ -449,10 +526,12 @@ const Demo3 = () => {
     children: /* @__PURE__ */ (0,jsx_runtime.jsx)("div", {
       style: {
         position: "absolute",
-        left: 400,
-        top: 200,
-        width: 600,
-        height: 600
+        left: 200,
+        top: 100,
+        width: "40%",
+        height: "40%",
+        background: "red",
+        overflow: "hidden"
       },
       children: /* @__PURE__ */ (0,jsx_runtime.jsx)(Ruler_Ruler, {
         children: /* @__PURE__ */ (0,jsx_runtime.jsx)("div", {
@@ -745,7 +824,7 @@ module.exports = ReactDOM;
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [169], () => (__webpack_require__(281)))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, [169], () => (__webpack_require__(853)))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
