@@ -1,6 +1,6 @@
 {
 	"name": "kevisual-ruler",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "",
 	"main": "src/ruler/index.ts",
 	"lib": "lib/index.js",
@@ -13,7 +13,7 @@
 		"start": "cross-env webpack serve --hot",
 		"dev": "npm start",
 		"build": "cross-env webpack",
-		"build:container": "cross-env webpack -c webpack.container.config.js",
+		"build:module": "rm -rf lib && cross-env webpack -c webpack.module.config.js",
 		"webpack": "webpack --watch",
 		"test": "jest",
 		"postinstall": "patch-package",
@@ -21,14 +21,14 @@
 		"eslint": "eslint --fix --ext .ts,.tsx src"
 	},
 	"dependencies": {
+		"lodash": "^4.17.21"
+	},
+	"devDependencies": {
 		"axios": "^1.1.3",
-		"lodash": "^4.17.21",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router": "6.4.2",
-		"react-router-dom": "6.4.2"
-	},
-	"devDependencies": {
+		"react-router-dom": "6.4.2",
 		"@types/jest": "^29.2.0",
 		"@types/lodash": "^4.14.186",
 		"@types/react": "^18.0.24",

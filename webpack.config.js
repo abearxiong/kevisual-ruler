@@ -87,9 +87,9 @@ const config = {
     maxAssetSize: 512000
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'docs'),
     // publicPath: `auto`,
-    publicPath: '/',
+    publicPath: dev ? '/' : '/kevisual-ruler/',
   },
   devtool: dev ? "source-map" : false,
   devServer: {
