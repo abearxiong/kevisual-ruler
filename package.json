@@ -1,5 +1,5 @@
 {
-	"name": "kevisual-ruler",
+	"name": "@abearxiong/kevisual-ruler",
 	"version": "0.0.1",
 	"description": "",
 	"main": "src/ruler/index.ts",
