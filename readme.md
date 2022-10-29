@@ -32,5 +32,5 @@ export const Demo = () => {
 
 ## 图片
 
-[预览](!https://github.com/abearxiong/kevisual-ruler/blob/main/public/kevisual-ruler.png?raw=true)
+![预览](https://raw.githubusercontent.com/abearxiong/kevisual-ruler/main/public/kevisual-ruler.png)
 
