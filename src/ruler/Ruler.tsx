@@ -23,11 +23,8 @@ export const Ruler = (props: Props) => {
 
 	useEffect(() => {
 		resize();
-		if (disabled) {
-			setMout(false);
-		}
 		setMout(true);
-	}, [disabled]);
+	}, []);
 	useEffect(() => {
 		if (mount) {
 			drawHorizontal(0);
@@ -89,7 +86,6 @@ export const Ruler = (props: Props) => {
 		position: 'absolute',
 		background: 'white',
 		zIndex: 1,
-		visibility,
 	};
 	const canvasStyle: any = {
 		position: 'absolute',
@@ -107,9 +103,27 @@ export const Ruler = (props: Props) => {
 						top: 0,
 						zIndex: 3,
 						...blankStyle,
+						visibility,
 					}}
 				></div>
-
+				<div
+					style={{
+						left: '100%',
+						top: 0,
+						zIndex: 1,
+						...blankStyle,
+						visibility: visibility,
+					}}
+				></div>
+				<div
+					style={{
+						left: 0,
+						top: '100%',
+						zIndex: 1,
+						...blankStyle,
+						visibility: visibility,
+					}}
+				></div>
 				<canvas
 					style={{
 						left: 20,
