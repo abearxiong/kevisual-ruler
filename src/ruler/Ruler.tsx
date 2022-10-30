@@ -83,38 +83,44 @@ export const Ruler = (props: Props) => {
 	const { background } = style || {};
 
 	const visibility = disabled ? 'hidden' : 'visible';
+	const blankStyle: any = {
+		width: 30,
+		height: 30,
+		position: 'absolute',
+		background: 'white',
+		zIndex: 1,
+		visibility,
+	};
+	const canvasStyle: any = {
+		position: 'absolute',
+		zIndex: 2,
+		background: background ? background : '#fff',
+		...ruleStyle,
+		visibility,
+	};
 	return (
 		<>
 			<div style={{ background: '#fff', ...style, position: 'absolute', width: '100%', height: '100%' }} ref={ref}>
 				<div
 					style={{
-						width: 30,
-						height: 30,
-						position: 'absolute',
 						left: 0,
 						top: 0,
-						background: 'white',
-						zIndex: 1,
-						visibility,
+						zIndex: 3,
+						...blankStyle,
 					}}
 				></div>
+
 				<canvas
 					style={{
-						position: 'absolute',
 						left: 20,
-						background: background ? background : '#fff',
-						...ruleStyle,
-						visibility,
+						...canvasStyle,
 					}}
 					ref={canvasHorizontalRef}
 				></canvas>
 				<canvas
 					style={{
-						position: 'absolute',
 						top: 20,
-						background: background ? background : '#fff',
-						...ruleStyle,
-						visibility,
+						...canvasStyle,
 					}}
 					ref={canvasVerticalRef}
 				></canvas>
