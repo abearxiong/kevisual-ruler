@@ -62,11 +62,11 @@ export const Ruler = (props: Props) => {
 
 	useEventListener('scroll', onScroll, childRef.current);
 
-	const ChildNodes = React.Children.map([props.children], (child: any, index) => {
+	const ChildNodes = React.Children.map(props.children, (child: any, index) => {
 		const { props } = child;
 		const { style } = props;
 		const cloneChild = React.cloneElement(child, {
-			...child,
+			...props,
 			ref: childRef,
 			style: {
 				...style,
@@ -74,19 +74,18 @@ export const Ruler = (props: Props) => {
 				width: '100%',
 				height: '100%',
 				overflow: 'auto',
-				left: 30,
-				top: 30,
+				left: !disabled ? 30 : 0,
+				top: !disabled ? 30 : 0,
 			},
 		});
 		return cloneChild;
 	});
 	const { background } = style || {};
-	if (disabled) {
-		return <>{children}</>;
-	}
+
+	const visibility = disabled ? 'hidden' : 'visible';
 	return (
 		<>
-			<div style={{ background: '#fff', overflow: 'hidden', ...style, position: 'absolute', width: '100%', height: '100%' }} ref={ref}>
+			<div style={{ background: '#fff', ...style, position: 'absolute', width: '100%', height: '100%' }} ref={ref}>
 				<div
 					style={{
 						width: 30,
@@ -96,6 +95,7 @@ export const Ruler = (props: Props) => {
 						top: 0,
 						background: 'white',
 						zIndex: 1,
+						visibility,
 					}}
 				></div>
 				<canvas
@@ -104,6 +104,7 @@ export const Ruler = (props: Props) => {
 						left: 20,
 						background: background ? background : '#fff',
 						...ruleStyle,
+						visibility,
 					}}
 					ref={canvasHorizontalRef}
 				></canvas>
@@ -113,6 +114,7 @@ export const Ruler = (props: Props) => {
 						top: 20,
 						background: background ? background : '#fff',
 						...ruleStyle,
+						visibility,
 					}}
 					ref={canvasVerticalRef}
 				></canvas>
