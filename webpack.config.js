@@ -33,11 +33,11 @@ if (dev) {
   }
 }
 if (!dev) {
-  plugins.push(new CopyPlugin({
-    patterns: [
-      { from: "public", to: "" },
-    ],
-  }))
+  // plugins.push(new CopyPlugin({
+  //   patterns: [
+  //     { from: "public", to: "" },
+  //   ],
+  // }))
 }
 const config = {
   target: 'web',
@@ -46,24 +46,24 @@ const config = {
   },
   mode,
   optimization: {
-    // runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      minSize: 20000,
-      minRemainingSize: 0,
-      maxAsyncRequests: 30,
-      maxInitialRequests: 30,
-      enforceSizeThreshold: 50000,
-      // maxSize: 20000,
-      cacheGroups: {
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
-    },
-    minimize: false,
+    runtimeChunk: 'single',
+    // splitChunks: {
+    //   chunks: 'all',
+    //   minSize: 20000,
+    //   minRemainingSize: 0,
+    //   maxAsyncRequests: 30,
+    //   maxInitialRequests: 30,
+    //   enforceSizeThreshold: 50000,
+    //   // maxSize: 20000,
+    //   cacheGroups: {
+    //     default: {
+    //       minChunks: 2,
+    //       priority: -20,
+    //       reuseExistingChunk: true,
+    //     },
+    //   },
+    // },
+    // minimize: false,
     // minimizer: [
     //   new TerserPlugin(
     //     {
@@ -240,7 +240,7 @@ const config = {
     //   chunkFilename: '[id].css'
     // }),
     ...plugins,
-    new BundleAnalyzerPlugin({ analyzerMode: !dev ? 'static' : 'disable' }),
+    // new BundleAnalyzerPlugin({ analyzerMode: !dev ? 'static' : 'disable' }),
     new CleanWebpackPlugin(),
   ],
 };
